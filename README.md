@@ -1,4 +1,4 @@
-# advent-of-code-2024
+# advent-of-code-2023
 
 This project contains solutions to [Advent of Code](https://adventofcode.com/)
 2023, using [Deno](https://deno.land/) and Typescript.
