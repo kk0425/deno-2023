@@ -26,12 +26,6 @@ function parse(input: string): Game[] {
   return input.trimEnd().split("\n").map((line) => {
     const [firstPart, secondPart] = line.split(":");
     const id = Number(firstPart.split(" ")[1]);
-    // secondPart = " 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"
-    // secondPart.split(";") = [" 3 blue, 4 red", " 1 red, 2 green, 6 blue", " 2 green"]
-    // subsetStr = " 3 blue, 4 red"
-    // colorString = " 3 blue"
-    // colorString.trimStart().split(' ') = ["3", "blue"]
-
     const subsets = secondPart.split(";").map((subsetStr) => {
       const subset: Subset = {
         red: 0,
@@ -41,11 +35,11 @@ function parse(input: string): Game[] {
       for (const colorString of subsetStr.split(",")) {
         const [cubeCount, cubeColor] = colorString.trimStart().split(" ");
         if (cubeColor === "red") {
-          subset.red = Number(cubeCount);
+          subset["red"] = Number(cubeCount);
         } else if (cubeColor === "green") {
-          subset.green = Number(cubeCount);
+          subset["green"] = Number(cubeCount);
         } else {
-          subset.blue = Number(cubeCount);
+          subset["blue"] = Number(cubeCount);
         }
       }
       return subset;
@@ -77,14 +71,33 @@ function part1(input: string): number {
     );
 }
 
-// function part2(input: string): number {
-//   const games = parse(input);
-//   throw new Error("TODO");
-// }
+function part2(input: string): number {
+  const games = parse(input);
+  let sum = 0;
+  for (const game of games) {
+    let red = 0;
+    let green = 0;
+    let blue = 0;
+
+    for (const gameSubset of game.subsets) {
+      if (gameSubset.red > red) {
+        red = gameSubset.red;
+      }
+      if (gameSubset.green > green) {
+        green = gameSubset.green;
+      }
+      if (gameSubset.blue > blue) {
+        blue = gameSubset.blue;
+      }
+    }
+    sum += red * green * blue;
+  }
+  return sum;
+}
 
 if (import.meta.main) {
   runPart(2023, 2, 1, part1);
-  // runPart(2023, 2, 2, part2);
+  runPart(2023, 2, 2, part2);
 }
 
 const TEST_INPUT = `\
@@ -99,6 +112,6 @@ Deno.test("part1", () => {
   assertEquals(part1(TEST_INPUT), 8);
 });
 
-// Deno.test("part2", () => {
-//   assertEquals(part2(TEST_INPUT), 12);
-// });
+Deno.test("part2", () => {
+  assertEquals(part2(TEST_INPUT), 2286);
+});
