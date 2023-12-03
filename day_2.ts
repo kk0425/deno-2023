@@ -12,16 +12,6 @@ interface Game {
   subsets: Subset[];
 }
 
-// Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-const game1: Game = {
-  id: 1,
-  subsets: [
-    { red: 4, green: 0, blue: 3 },
-    { red: 1, green: 2, blue: 6 },
-    { red: 0, green: 2, blue: 0 },
-  ],
-};
-
 function parse(input: string): Game[] {
   return input.trimEnd().split("\n").map((line) => {
     const [firstPart, secondPart] = line.split(":");
